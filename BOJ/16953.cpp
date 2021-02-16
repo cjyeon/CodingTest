@@ -1,8 +1,4 @@
 #include <iostream>
-#include <queue>
-#include <vector>
-#include <string>
-#include <algorithm>
 using namespace std;
 
 int main() {
@@ -10,21 +6,23 @@ int main() {
     
     cin >> a >> b;
 
-    for (int i = b; i >= a; i++) {
+    while(true) {
         if(b == a) {
-            cout << ++result;
+            cout << ++result << endl;
             break;
-        } else if (a > b) {
-            cout << -1;
+        } 
+        if (a > b) {
+            cout << -1 << endl;
             break;
         } else if (b % 10 == 1) {
             b /= 10;
-            result++;
         } else if (b % 2 == 0) {
             b /= 2 ;
-            result++;
+        } else {
+            cout << -1 << endl;
+            break;
         }
+        result++;
     }
-    
     return 0;   
 }
