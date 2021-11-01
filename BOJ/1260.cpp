@@ -1,60 +1,64 @@
 #include <iostream>
 #include <queue>
+#include <cstring>
 using namespace std;
 
-bool line[1001][1001] = {0,};
-bool dfs_visited[1001] = {0,};
-bool bfs_visited[1001] = {0,};
+const int MAX = 1001;
 
-void dfs(int n, int v) {
-    dfs_visited[v] = 1;
-    cout << v << " ";
+int N, M, V;
+int graph[MAX][MAX];
+bool visited[MAX];
+queue<int> q;
 
-    for (int i = 1; i <= n; i++)
-    {
-        if (line[v][i] && !dfs_visited[i])
-        {
-            dfs(n, i);
+void DFS(int idx) {
+    cout << idx << " ";
+
+    for (int i = 1; i <= N; i++) {
+        if (graph[idx][i] && !visited[i]) {
+            visited[i] = 1;
+            DFS(i);
+        }   
+    }
+}
+
+void BFS(int idx) {
+    q.push(idx);
+    visited[idx] = 1;
+
+    while(!q.empty()) {
+        idx = q.front();
+        q.pop();
+
+        cout << idx << " ";
+
+        for (int i = 1; i <= N; i++) {
+            if (graph[idx][i] && !visited[i]) {
+                visited[i] = 1;
+                q.push(i);
+            }
         }
     }
 }
 
-void bfs(int n, int v) {
-    queue<int> q;
-
-    bfs_visited[v] = 1;
-    q.push(v);
-    while (!q.empty()) 
-    {
-        int now = q.front();
-        cout << now << " ";
-        q.pop();
-        for (int i = 1; i <= n; i++)
-        {
-            if (line[now][i] && !bfs_visited[i])
-            {
-                q.push(i);
-                bfs_visited[i] = 1;
-            }   
-        } 
-    }    
-}
-
 int main() {
-    int n, m, v;
-    cin >> n >> m >> v;
+    cin >> N >> M >> V;
 
-    while (m--)
+    for (int i = 0; i < M; i++)
     {
-       int x,y;
-       cin >> x >> y;
-       line[x][y] = 1;
-       line[y][x] = 1;
+        int from, to;
+        cin >> from >> to;
+
+        graph[from][to] = 1;
+        graph[to][from] = 1;
     }
-    
-    dfs(n, v);
-    cout << endl;
-    bfs(n,v);
+
+    visited[V] = 1;
+    DFS(V);
+    cout << '\n';
+
+    memset(visited, false, sizeof(visited));
+    BFS(V);
+    cout << '\n';
 
     return 0;
 }
